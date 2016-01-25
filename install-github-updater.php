@@ -35,6 +35,10 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
          * TODO add ability to dismiss admin notices for a week
          */
         function admin_init() {
+            if ( get_transient( 'github_updater_dismiss_notice' ) ) {
+                return;
+            }
+
             if ( $this->is_installed() ) {
                 if ( ! is_plugin_active( $this->slug ) ) {
                     $this->message = 'activate';
@@ -64,6 +68,13 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
                         $('.github-updater p').html(response);
                     });
                 });
+
+                $(document).on('click', '.github-updater .notice-dismiss', function() {
+                    $.post(ajaxurl, {
+                        action: 'github_updater',
+                        method: 'dismiss'
+                    });
+                });
             });
         })(jQuery);
         </script>
@@ -76,7 +87,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
          */
         function ajax_router() {
             $method = isset( $_POST['method'] ) ? $_POST['method'] : '';
-            $whitelist = array( 'install', 'activate' );
+            $whitelist = array( 'install', 'activate', 'dismiss' );
 
             if ( in_array( $method, $whitelist ) ) {
                 $response = $this->$method();
@@ -159,6 +170,15 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
             }
 
             return array( 'status' => 'ok', 'message' => 'GitHub Updater has been activated.' );
+        }
+
+
+        /**
+         * Dismiss admin notice for a week
+         */
+        function dismiss() {
+            set_transient( 'github_updater_dismiss_notice', 'yes', ( 60 * 60 * 24 * 7 ) );
+            return array( 'status' => 'ok', 'message' => '' );
         }
 
 

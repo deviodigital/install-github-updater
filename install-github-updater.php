@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Install GitHub Updater
+ * Derived from WP Install Dependencies
+ * <https://github.com/afragen/wp-install-dependencies>
+ *
+ * @author    Matt Gibbs
+ * @license   GPL-2.0+
+ * @link      https://github.com/mgibbs189/install-github-updater
+ */
+
 defined( 'ABSPATH' ) or exit;
 
 if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
@@ -20,6 +30,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Determine if GHU is active or installed
+         */
         function admin_init() {
             if ( $this->is_installed() ) {
                 if ( ! is_plugin_active( $this->slug ) ) {
@@ -32,6 +45,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Register jQuery AJAX
+         */
         function admin_footer() {
         ?>
         <script>
@@ -54,6 +70,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * AJAX router
+         */
         function ajax_router() {
             $method = isset( $_POST['method'] ) ? $_POST['method'] : '';
             $whitelist = array( 'install', 'activate' );
@@ -67,17 +86,27 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Is GHU installed?
+         */
         function is_installed() {
             $plugins = get_plugins();
             return isset( $plugins[ $this->slug ] );
         }
 
 
+        /**
+         * Can GHU be installed automatically?
+         */
         function is_writable() {
             return wp_mkdir_p( WP_PLUGIN_DIR . '/github-updater' );
         }
 
 
+        /**
+         * Install GHU
+         * TODO figure out how to hide the Installer_Skin status text
+         */
         function install() {
             require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
@@ -107,6 +136,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Rename the plugin folder to "github-updater"
+         */
         function upgrader_source_selection( $source, $remote_source ) {
             global $wp_filesystem;
             $new_source = trailingslashit( $remote_source ) . dirname( $this->slug );
@@ -115,6 +147,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Activate GHU
+         */
         function activate() {
             $result = activate_plugin( $this->slug );
 
@@ -126,6 +161,9 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
         }
 
 
+        /**
+         * Display admin notices / action links
+         */
         function admin_notices() {
             if ( $this->message ) {
                 if ( 'install' == $this->message ) {

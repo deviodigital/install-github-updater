@@ -1,5 +1,5 @@
 # Install GitHub Updater
-A drop-in class to install / activate the GitHub Updater plugin
+A drop-in class to install / activate the <a href="https://github.com/afragen/github-updater" target="_blank">GitHub Updater</a> plugin
 
 ## How it works
 This drop-in checks to see if the GitHub Updater plugin is installed. If not installed, it will display an `Install Now` link, which will automatically install and activate the plugin.
@@ -11,4 +11,4 @@ If GitHub Updater is installed but not activated, the user will be prompted to `
 ## Usage
 1. Add `install-github-updater.php` into your theme or plugin directory
 2. `include( '/path/to/install-github-updater.php' );`
-3. To enable automatic updates for your plugin or theme, see the <a href="https://github.com/afragen/github-updater#description">GitHub Updater docs</a>
+3. To enable automatic updates for your plugin or theme, see the <a href="https://github.com/afragen/github-updater#description" target="_blank">GitHub Updater docs</a>

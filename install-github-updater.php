@@ -40,11 +40,11 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
             if ( $this->is_installed() ) {
                 if ( ! is_plugin_active( $this->slug ) ) {
-                    $this->message = array( 'action' => 'activate', 'text' => 'Please activate the GitHub Updater plugin.' );
+                    $this->message = array( 'action' => 'activate', 'text' => __( 'Please activate the GitHub Updater plugin.' ) );
                 }
             }
             else {
-                $this->message = array( 'action' => 'install', 'text' => 'The GitHub Updater plugin is required.' );
+                $this->message = array( 'action' => 'install', 'text' => __( 'The GitHub Updater plugin is required.' ) );
             }
         }
 
@@ -108,14 +108,11 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
         /**
          * Install GHU
-         * TODO figure out how to hide the Installer_Skin status text
          */
         function install() {
-            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-
             add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 2 );
 
-            $skin = new Plugin_Installer_Skin( array(
+            $skin = new IGU_Plugin_Installer_Skin( array(
                 'type'      => 'plugin',
                 'nonce'     => wp_nonce_url( $this->zip ),
             ) );
@@ -135,7 +132,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
                 return $result;
             }
 
-            return array( 'status' => 'ok', 'message' => 'GitHub Updater has been installed.' );
+            return array( 'status' => 'ok', 'message' => __( 'GitHub Updater has been installed.' ) );
         }
 
 
@@ -160,7 +157,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
                 return array( 'status' => 'error', 'message' => $result->get_error_message() );
             }
 
-            return array( 'status' => 'ok', 'message' => 'GitHub Updater has been activated.' );
+            return array( 'status' => 'ok', 'message' => __( 'GitHub Updater has been activated.' ) );
         }
 
 
@@ -189,6 +186,22 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
             }
         }
     }
+
+
+    require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+
+    /**
+     * Override Plugin_Installer_Skin to disable automatic output
+     */
+    class IGU_Plugin_Installer_Skin extends Plugin_Installer_Skin
+    {
+        public function header() {}
+        public function footer() {}
+        public function error( $errors ) {}
+        public function feedback( $string ) {}
+    }
+
 
     new Install_GitHub_Updater();
 }

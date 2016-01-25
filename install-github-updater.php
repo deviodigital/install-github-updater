@@ -108,14 +108,6 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
 
         /**
-         * Can GHU be installed automatically?
-         */
-        function is_writable() {
-            return wp_mkdir_p( WP_PLUGIN_DIR . '/github-updater' );
-        }
-
-
-        /**
          * Install GHU
          * TODO figure out how to hide the Installer_Skin status text
          */
@@ -189,13 +181,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
             if ( $this->message ) {
                 if ( 'install' == $this->message ) {
                     $notice = 'The GitHub Updater plugin is required. ';
-
-                    if ( $this->is_writable() ) {
-                        $notice .= '<a href="javascript:;" class="ghu-button" data-action="install">Install Now</a>';
-                    }
-                    else {
-                        $notice .= '<a href="' . $this->zip . '">Download ZIP</a>';
-                    }
+                    $notice .= '<a href="javascript:;" class="ghu-button" data-action="install">Install Now</a>';
                 }
                 elseif ( 'activate' == $this->message ) {
                     $notice = 'Please activate the GitHub Updater plugin. ';

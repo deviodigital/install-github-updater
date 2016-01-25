@@ -17,7 +17,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
     class Install_GitHub_Updater
     {
 
-        public $message = false;
+        public $message = array();
         public $slug = 'github-updater/github-updater.php';
         public $zip = 'https://github.com/afragen/github-updater/archive/master.zip';
 
@@ -32,7 +32,6 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
         /**
          * Determine if GHU is active or installed
-         * TODO add ability to dismiss admin notices for a week
          */
         function admin_init() {
             if ( get_transient( 'github_updater_dismiss_notice' ) ) {
@@ -41,11 +40,11 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
             if ( $this->is_installed() ) {
                 if ( ! is_plugin_active( $this->slug ) ) {
-                    $this->message = 'activate';
+                    $this->message = array( 'action' => 'activate', 'text' => 'Please activate the GitHub Updater plugin.' );
                 }
             }
             else {
-                $this->message = 'install';
+                $this->message = array( 'action' => 'install', 'text' => 'The GitHub Updater plugin is required.' );
             }
         }
 
@@ -178,15 +177,10 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
          * Display admin notices / action links
          */
         function admin_notices() {
-            if ( $this->message ) {
-                if ( 'install' == $this->message ) {
-                    $notice = 'The GitHub Updater plugin is required. ';
-                    $notice .= '<a href="javascript:;" class="ghu-button" data-action="install">Install Now</a>';
-                }
-                elseif ( 'activate' == $this->message ) {
-                    $notice = 'Please activate the GitHub Updater plugin. ';
-                    $notice .= '<a href="javascript:;" class="ghu-button" data-action="activate">Activate Now</a>';
-                }
+            if ( ! empty( $this->message ) ) {
+                $action = $this->message['action'];
+                $notice = $this->message['text'];
+                $notice .= ' <a href="javascript:;" class="ghu-button" data-action="' . $action . '">' . ucfirst( $action ) . ' Now &raquo;</a>';
         ?>
             <div class="updated notice is-dismissible github-updater">
                 <p><?php echo $notice; ?></p>

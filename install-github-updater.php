@@ -32,6 +32,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
 
         /**
          * Determine if GHU is active or installed
+         * TODO add ability to dismiss admin notices for a week
          */
         function admin_init() {
             if ( $this->is_installed() ) {

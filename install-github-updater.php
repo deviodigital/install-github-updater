@@ -132,7 +132,7 @@ if ( ! class_exists( 'Install_GitHub_Updater' ) ) {
                 return $result;
             }
 
-            return array( 'status' => 'ok', 'message' => __( 'GitHub Updater has been installed.' ) );
+            return array( 'status' => 'ok', 'message' => __( 'GitHub Updater has been installed and activated.' ) );
         }
 
 

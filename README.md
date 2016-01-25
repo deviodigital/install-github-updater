@@ -4,7 +4,7 @@ A drop-in class to install / activate the GitHub Updater plugin
 ## How it works
 This drop-in checks to see if the GitHub Updater plugin is installed. If not installed, it will display an `Install Now` link, which will automatically install and activate the plugin.
 
-<img src="http://i.imgur.com/RS3EYjO.png" width="511" height="151" />
+<img src="http://i.imgur.com/SwutQJx.gif" width="536" height="239" />
 
 If GitHub Updater is installed but not activated, the user will be prompted to `Activate Now`. If the the admin notice is dismissed, it will not appear again for 7 days.
 
